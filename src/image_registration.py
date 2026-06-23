@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 # Open the image files.
-img1_color = cv2.imread("align.jpg")  # Image to be aligned.
-img2_color = cv2.imread("ref.jpg")    # Reference image.
+img1_color = cv2.imread("data/align.jpeg")  # Image to be aligned.
+img2_color = cv2.imread("data/ref.jpeg")    # Reference image.
 
 # Convert to grayscale.
 img1 = cv2.cvtColor(img1_color, cv2.COLOR_BGR2GRAY)
@@ -28,10 +28,10 @@ matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = True)
 matches = matcher.match(d1, d2)
 
 # Sort matches on the basis of their Hamming distance.
-matches.sort(key = lambda x: x.distance)
+matches_ordenados = sorted(matches, key = lambda x: x.distance)
 
 # Take the top 90 % matches forward.
-matches = matches[:int(len(matches)*0.9)]
+matches = matches_ordenados[:int(len(matches_ordenados)*0.9)]
 no_of_matches = len(matches)
 
 # Define empty matrices of shape no_of_matches * 2.
@@ -51,4 +51,4 @@ transformed_img = cv2.warpPerspective(img1_color,
                     homography, (width, height))
 
 # Save the output.
-cv2.imwrite('output.jpg', transformed_img)
+cv2.imwrite('out/output.jpg', transformed_img)
